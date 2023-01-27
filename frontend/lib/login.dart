@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:ttt/signup.dart';
+import 'package:ttt/post.dart';
 const String tWelcomeScreen = "/Users/jessiezhao/Documents/github/FirstProgrammingProj/frontend/Assets/tWelcomeScreen.png";
+
+
 class MyLoginPage extends StatefulWidget {
   const MyLoginPage({super.key});
 
@@ -29,9 +32,9 @@ class _MyLoginPageState extends State<MyLoginPage> {
         headers: {"Content-Type": "application/json"},
         body: loginData
     );
-    final responseData = jsonDecode(response.body);
-    (await _prefs).setString("token", responseData['data']);
-    print(response.body);
+    final Map<String, dynamic> responseData = jsonDecode(response.body);
+    final SharedPreferences prefs = await _prefs;
+    (prefs).setString("token", responseData['data']);
     return response;
   }
 
@@ -105,7 +108,16 @@ class _MyLoginPageState extends State<MyLoginPage> {
               child: ElevatedButton(
                 child: const Text('Login'),
                 onPressed: () {
-                  sendLoginRequest();
+                  Future<http.Response> re = sendLoginRequest();
+                  re.then((value) {
+                    if (jsonDecode(value.body)['success']) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const MyPostPage()),
+                      );
+                    }
+                  });
                 },
               ),
             ),
