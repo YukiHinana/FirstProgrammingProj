@@ -1,41 +1,22 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import 'package:ttt/signup.dart';
-const String tWelcomeScreen = "/Users/jessiezhao/Documents/github/FirstProgrammingProj/frontend/Assets/tWelcomeScreen.png";
-class MyLoginPage extends StatefulWidget {
-  const MyLoginPage({super.key});
+
+class MySignupPage extends StatefulWidget {
+  const MySignupPage({super.key});
 
   @override
-  State<MyLoginPage> createState() => _MyLoginPageState();
-
+  State<MySignupPage> createState() => _MySignupState();
 }
 
-class _MyLoginPageState extends State<MyLoginPage> {
+class _MySignupState extends State<MySignupPage> {
   late TextEditingController _usernameController;
   late TextEditingController _passwordController;
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
-  Future<http.Response> sendLoginRequest() async {
-    var loginData = json.encode(
-        {
-          'username': _usernameController.text,
-          'password': _passwordController.text
-        }
-    );
-    var response = await http.post(
-        Uri.parse('http://128.61.24.205:8080/account/login'),
-        headers: {"Content-Type": "application/json"},
-        body: loginData
-    );
-    final responseData = jsonDecode(response.body);
-    (await _prefs).setString("token", responseData['data']);
-    print(response.body);
-    return response;
-  }
-
-  Future<http.Response> sendSignupRequest() async {
+ Future<http.Response> sendSignupRequest() async {
     var signupData = json.encode(
         {
           'username': _usernameController.text,
@@ -48,26 +29,16 @@ class _MyLoginPageState extends State<MyLoginPage> {
         body: signupData
     );
     final responseData = jsonDecode(response.body);
-    (await _prefs).setString("token", responseData['data']);
     print(response.body);
     return response;
   }
-
-  @override
+   @override
   void initState() {
     super.initState();
     _usernameController = TextEditingController();
     _passwordController = TextEditingController();
   }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _usernameController.dispose();
-    _passwordController.dispose();
-  }
-
-  @override
+   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
@@ -103,31 +74,14 @@ class _MyLoginPageState extends State<MyLoginPage> {
             Container(
               height: 50,
               child: ElevatedButton(
-                child: const Text('Login'),
+                child: const Text('SignUp'),
                 onPressed: () {
-                  sendLoginRequest();
+                  sendSignupRequest();
                 },
               ),
             ),
-              SizedBox(height: 10),
-
-            Container(
-              height: 50,
-              child: ElevatedButton(
-                child: const Text('SignUp'),
-                onPressed: (){
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const MySignupPage()),
-                                );
-                },
-                 ),
-            ),
-            Image(image: const AssetImage(tWelcomeScreen), height: size.height * 0.2 ,),
-
           ]
-      ),
-      
+    ),
     );
   }
 }
