@@ -27,14 +27,23 @@ class _MyLoginPageState extends State<MyLoginPage> {
         }
     );
     var response = await http.post(
-        Uri.parse('http://128.61.24.205:8080/account/login'),
+        Uri.parse('http://10.180.243.152:8080/account/login'),
         headers: {"Content-Type": "application/json"},
         body: loginData
     );
     final Map<String, dynamic> responseData = jsonDecode(response.body);
     final SharedPreferences prefs = await _prefs;
-    (prefs).setString("token", responseData['data']);
+    if (responseData['success']) {
+      (prefs).setString("token", responseData['data']);
+    }
     return response;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _usernameController = TextEditingController();
+    _passwordController = TextEditingController();
   }
 
   @override
@@ -46,12 +55,8 @@ class _MyLoginPageState extends State<MyLoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: const Text('Test Login Page'),
       ),
       body: Column(
@@ -76,7 +81,6 @@ class _MyLoginPageState extends State<MyLoginPage> {
                 controller: _passwordController,
               ),
             ),
-          
             Container(
               height: 50,
               child: ElevatedButton(
@@ -84,35 +88,48 @@ class _MyLoginPageState extends State<MyLoginPage> {
                 onPressed: () {
                   Future<http.Response> re = sendLoginRequest();
                   re.then((value) {
+                    // redirect to next page on success
                     if (jsonDecode(value.body)['success']) {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => const MyPostPage()),
                       );
+                    } else {
+                      // if incorrect username or password, pop alert window
+                      showDialog<String>(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            title: const Text('Login Failed'),
+                            content: Text(jsonDecode(value.body)['data']),
+                            actions: [
+                              TextButton(
+                                  onPressed: () => Navigator.pop(context, 'OK'),
+                                  child: const Text('OK'))
+                            ],
+                          )
+                      );
                     }
                   });
                 },
               ),
             ),
-              SizedBox(height: 10),
-
+            const SizedBox(height: 10),
             Container(
               height: 50,
               child: ElevatedButton(
                 child: const Text('SignUp'),
-                onPressed: (){
+                onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const MySignupPage()),
-                                );
+                    MaterialPageRoute(
+                        builder: (context) => const MySignupPage()),
+                  );
                 },
-                 ),
+              ),
             ),
-
           ]
       ),
-      
     );
   }
 }

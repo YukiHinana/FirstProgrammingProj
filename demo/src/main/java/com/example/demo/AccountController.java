@@ -24,18 +24,18 @@ public class AccountController {
     }
 
     @PostMapping("/")
-    public ResponseWrapper<Account> register(@RequestBody AccountRequest request) {
+    public ResponseWrapper<?> register(@RequestBody AccountRequest request) {
         System.out.println(request);
         Account newAccount = new Account(request.getUsername(), request.getPassword());
         Optional<Account> findAccount = accountRepository.findByUsername(request.getUsername());
         if (findAccount.isPresent()){
-            return new ResponseWrapper<>(false, null);
+            return new ResponseWrapper<String>(false, "Username already exists!");
         }
         return new ResponseWrapper<>(true, accountRepository.save(newAccount));
     }
 
     @PostMapping("/login")
-    public ResponseWrapper<String> login(@RequestBody AccountRequest request) {
+    public ResponseWrapper<?> login(@RequestBody AccountRequest request) {
         String username = request.getUsername();
         Optional<Account> account = accountRepository.findByUsername(username);
         if (account.isPresent()) {
@@ -45,6 +45,6 @@ public class AccountController {
                 return new ResponseWrapper<>(true, uuid);
             }
         }
-        return new ResponseWrapper<>(false, null);
+        return new ResponseWrapper<>(false, "Incorrect username or password");
     }
 }

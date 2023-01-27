@@ -26,7 +26,7 @@ class _MySignupState extends State<MySignupPage> {
         }
     );
     var response = await http.post(
-        Uri.parse('http://128.61.24.205:8080/account/'),
+        Uri.parse('http://10.180.243.152:8080/account/'),
         headers: {"Content-Type": "application/json"},
         body: signupData
     );
