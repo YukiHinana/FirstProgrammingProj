@@ -12,6 +12,8 @@ class MySignupPage extends StatefulWidget {
 }
 
 class _MySignupState extends State<MySignupPage> {
+  // final TextEditingController _usernameController  = TextEditingController();
+  // final TextEditingController _passwordController = TextEditingController();
   late TextEditingController _usernameController;
   late TextEditingController _passwordController;
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -24,12 +26,13 @@ class _MySignupState extends State<MySignupPage> {
         }
     );
     var response = await http.post(
-        Uri.parse('http://128.61.24.205:8080/account/login'),
+        Uri.parse('http://128.61.24.205:8080/account/'),
         headers: {"Content-Type": "application/json"},
         body: signupData
     );
     final responseData = jsonDecode(response.body);
     print(response.body);
+    print(responseData);
     return response;
   }
    @override
@@ -38,10 +41,10 @@ class _MySignupState extends State<MySignupPage> {
     _usernameController = TextEditingController();
     _passwordController = TextEditingController();
   }
+
    @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by

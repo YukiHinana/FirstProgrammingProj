@@ -4,7 +4,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:ttt/signup.dart';
 import 'package:ttt/post.dart';
-const String tWelcomeScreen = "/Users/jessiezhao/Documents/github/FirstProgrammingProj/frontend/Assets/tWelcomeScreen.png";
 
 
 class MyLoginPage extends StatefulWidget {
@@ -16,7 +15,7 @@ class MyLoginPage extends StatefulWidget {
 }
 
 class _MyLoginPageState extends State<MyLoginPage> {
-  late TextEditingController _usernameController;
+ late TextEditingController _usernameController;
   late TextEditingController _passwordController;
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
@@ -36,31 +35,6 @@ class _MyLoginPageState extends State<MyLoginPage> {
     final SharedPreferences prefs = await _prefs;
     (prefs).setString("token", responseData['data']);
     return response;
-  }
-
-  Future<http.Response> sendSignupRequest() async {
-    var signupData = json.encode(
-        {
-          'username': _usernameController.text,
-          'password': _passwordController.text
-        }
-    );
-    var response = await http.post(
-        Uri.parse('http://128.61.24.205:8080/account/login'),
-        headers: {"Content-Type": "application/json"},
-        body: signupData
-    );
-    final responseData = jsonDecode(response.body);
-    (await _prefs).setString("token", responseData['data']);
-    print(response.body);
-    return response;
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _usernameController = TextEditingController();
-    _passwordController = TextEditingController();
   }
 
   @override
@@ -135,7 +109,6 @@ class _MyLoginPageState extends State<MyLoginPage> {
                 },
                  ),
             ),
-            Image(image: const AssetImage(tWelcomeScreen), height: size.height * 0.2 ,),
 
           ]
       ),

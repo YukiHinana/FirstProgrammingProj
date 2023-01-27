@@ -19,4 +19,12 @@ public class AccountRequest {
     public String getPassword() {
         return password;
     }
+
+    @Override
+    public String toString() {
+        return "AccountRequest{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }
