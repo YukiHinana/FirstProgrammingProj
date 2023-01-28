@@ -1,23 +1,14 @@
-import 'package:flutter/material.dart';
+class Post {
+  String title;
+  String author;
+  Post(this.title, this.author);
 
-class MyPostPage extends StatelessWidget {
-  const MyPostPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar (
-        title: const Text('Posts'),
-      ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: const Text('back'),
-        ),
-      ),
-    );
+  factory Post.fromJson(dynamic json) {
+    return Post(json['title'] as String, json['author']['username'] as String);
   }
 
+  @override
+  String toString() {
+    return '{ $title, $author }';
+  }
 }

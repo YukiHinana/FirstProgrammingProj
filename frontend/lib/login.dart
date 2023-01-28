@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:ttt/signup.dart';
-import 'package:ttt/post.dart';
+import 'package:ttt/allPostPage.dart';
 
 
 class MyLoginPage extends StatefulWidget {
@@ -11,11 +11,10 @@ class MyLoginPage extends StatefulWidget {
 
   @override
   State<MyLoginPage> createState() => _MyLoginPageState();
-
 }
 
 class _MyLoginPageState extends State<MyLoginPage> {
- late TextEditingController _usernameController;
+  late TextEditingController _usernameController;
   late TextEditingController _passwordController;
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
@@ -99,15 +98,17 @@ class _MyLoginPageState extends State<MyLoginPage> {
                       // if incorrect username or password, pop alert window
                       showDialog<String>(
                           context: context,
-                          builder: (BuildContext context) => AlertDialog(
-                            title: const Text('Login Failed'),
-                            content: Text(jsonDecode(value.body)['data']),
-                            actions: [
-                              TextButton(
-                                  onPressed: () => Navigator.pop(context, 'OK'),
-                                  child: const Text('OK'))
-                            ],
-                          )
+                          builder: (BuildContext context) =>
+                              AlertDialog(
+                                title: const Text('Login Failed'),
+                                content: Text(jsonDecode(value.body)['data']),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () =>
+                                          Navigator.pop(context, 'OK'),
+                                      child: const Text('OK'))
+                                ],
+                              )
                       );
                     }
                   });
