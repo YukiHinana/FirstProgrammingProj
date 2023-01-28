@@ -12,8 +12,6 @@ class MySignupPage extends StatefulWidget {
 }
 
 class _MySignupState extends State<MySignupPage> {
-  // final TextEditingController _usernameController  = TextEditingController();
-  // final TextEditingController _passwordController = TextEditingController();
   late TextEditingController _usernameController;
   late TextEditingController _passwordController;
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -26,7 +24,7 @@ class _MySignupState extends State<MySignupPage> {
         }
     );
     var response = await http.post(
-        Uri.parse('http://10.180.243.152:8080/account/'),
+        Uri.parse('http://appdemo.dns.codetector.org/account/'),
         headers: {"Content-Type": "application/json"},
         body: signupData
     );

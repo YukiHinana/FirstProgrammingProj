@@ -27,7 +27,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
         }
     );
     var response = await http.post(
-        Uri.parse('http://10.180.243.152:8080/account/login'),
+        Uri.parse('http://appdemo.dns.codetector.org/account/login'),
         headers: {"Content-Type": "application/json"},
         body: loginData
     );
