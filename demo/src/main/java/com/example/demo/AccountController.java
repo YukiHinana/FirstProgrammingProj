@@ -1,4 +1,5 @@
 package com.example.demo;
+
 import com.example.demo.entity.Account;
 import com.example.demo.entity.Token;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +29,7 @@ public class AccountController {
         System.out.println(request);
         Account newAccount = new Account(request.getUsername(), request.getPassword());
         Optional<Account> findAccount = accountRepository.findByUsername(request.getUsername());
-        if (findAccount.isPresent()){
+        if (findAccount.isPresent()) {
             return new ResponseWrapper<String>(false, "Username already exists!");
         }
         return new ResponseWrapper<>(true, accountRepository.save(newAccount));

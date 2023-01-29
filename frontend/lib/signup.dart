@@ -77,7 +77,25 @@ class _MySignupState extends State<MySignupPage> {
               child: ElevatedButton(
                 child: const Text('SignUp'),
                 onPressed: () {
-                  sendSignupRequest();
+                Future<http.Response> res = sendSignupRequest();
+                res.then((value) {
+                  if (jsonDecode(value.body)['success']){
+                    Navigator.push(
+                    context, 
+                    MaterialPageRoute(builder: (context) => const MySignupPage()),
+                    );
+                  }
+                  else{
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: Text('Sign Up Failed!'),
+                        content: Text('Username alread exist!'),
+                      ),
+                    );
+                  }
+    
+                });
                 },
               ),
             ),
