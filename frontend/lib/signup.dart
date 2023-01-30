@@ -17,7 +17,7 @@ class _MySignupState extends State<MySignupPage> {
   late TextEditingController _usernameController;
   late TextEditingController _passwordController;
 
- Future<http.Response> sendSignupRequest() async {
+  Future<http.Response> sendSignupRequest() async {
     var signupData = json.encode(
         {
           'username': _usernameController.text,
@@ -31,16 +31,19 @@ class _MySignupState extends State<MySignupPage> {
     );
     return response;
   }
-   @override
+
+  @override
   void initState() {
     super.initState();
     _usernameController = TextEditingController();
     _passwordController = TextEditingController();
   }
 
-   @override
+  @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    final size = MediaQuery
+        .of(context)
+        .size;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Test SignUp Page'),
@@ -67,52 +70,54 @@ class _MySignupState extends State<MySignupPage> {
                 controller: _passwordController,
               ),
             ),
-          
+
             Container(
               height: 50,
               child: ElevatedButton(
                 child: const Text('SignUp'),
                 onPressed: () {
-                Future<http.Response> res = sendSignupRequest();
-                res.then((value) {
-                  if (jsonDecode(value.body)['success']){
-                    Navigator.push(
-                    context, 
-                    MaterialPageRoute(builder: (context) => const MyLoginPage()),
-                    );
-                  }
-                  else if (_usernameController.text.isEmpty ||
-                      _passwordController.text.isEmpty) {
-                    showDialog<String>(
+                  Future<http.Response> res = sendSignupRequest();
+                  res.then((value) {
+                    if (value.statusCode == 200) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const MyLoginPage()),
+                      );
+                    }
+                    else if (_usernameController.text.isEmpty ||
+                        _passwordController.text.isEmpty) {
+                      showDialog<String>(
+                          context: context,
+                          builder: (BuildContext context) =>
+                              AlertDialog(
+                                title: const Text('Sign Up Failed!'),
+                                content: Text('Username and password required'),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () =>
+                                          Navigator.pop(context, 'OK'),
+                                      child: const Text('OK'))
+                                ],
+                              )
+                      );
+                    }
+                    else {
+                      showDialog(
                         context: context,
-                        builder: (BuildContext context) =>
+                        builder: (context) =>
                             AlertDialog(
-                              title: const Text('Sign Up Failed!'),
-                              content: Text('Username and password required'),
-                              actions: [
-                                TextButton(
-                                    onPressed: () =>
-                                        Navigator.pop(context, 'OK'),
-                                    child: const Text('OK'))
-                              ],
-                            )
-                    );
-                  }
-                  else{
-                    showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        title: Text('Sign Up Failed!'),
-                        content: Text('Username alread exist!'),
-                      ),
-                    );
-                  }
-                });
+                              title: Text('Sign Up Failed!'),
+                              content: Text('Username alread exist!'),
+                            ),
+                      );
+                    }
+                  });
                 },
               ),
             ),
           ]
-    ),
+      ),
     );
   }
 }
