@@ -62,6 +62,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
         title: const Text('Test Login Page'),
       ),
       body: Column(
+      
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -73,6 +74,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
                 controller: _usernameController,
               ),
             ),
+            
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(
@@ -133,6 +135,16 @@ class _MyLoginPageState extends State<MyLoginPage> {
                 },
               ),
             ),
+            SizedBox(height: 30),
+              Container(
+                  height: 500,
+                  width: double.infinity,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage("assets/background.jpg"),
+                        fit: BoxFit.cover),
+  ),
+        ),
           ]
       ),
     );
