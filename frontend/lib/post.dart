@@ -1,14 +1,15 @@
 class Post {
   String title;
   String author;
-  Post(this.title, this.author);
+  String body;
+  Post(this.title, this.author, this.body);
 
   factory Post.fromJson(dynamic json) {
-    return Post(json['title'] as String, json['author']['username'] as String);
+    return Post(json['title'] as String, json['author']['username'] as String, json['body'] as String);
   }
 
   @override
   String toString() {
-    return '{ $title, $author }';
+    return '{ $title, $author, $body }';
   }
 }

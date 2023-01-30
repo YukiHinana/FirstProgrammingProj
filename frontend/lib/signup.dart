@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
+import 'login.dart';
+
 class MySignupPage extends StatefulWidget {
   const MySignupPage({super.key});
 
@@ -41,7 +43,7 @@ class _MySignupState extends State<MySignupPage> {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Test Login Page'),
+        title: const Text('Test SignUp Page'),
       ),
       body: Column(
           children: [
@@ -76,7 +78,7 @@ class _MySignupState extends State<MySignupPage> {
                   if (jsonDecode(value.body)['success']){
                     Navigator.push(
                     context, 
-                    MaterialPageRoute(builder: (context) => const MySignupPage()),
+                    MaterialPageRoute(builder: (context) => const MyLoginPage()),
                     );
                   }
                   else if (_usernameController.text.isEmpty ||

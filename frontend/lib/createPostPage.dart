@@ -113,7 +113,8 @@ class _NewPostPageState extends State<NewPostPage> {
                   ),
                 )
               ]
-          ),)
+          ),
+          )
     );
   }
 }

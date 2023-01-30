@@ -7,6 +7,8 @@ import 'package:ttt/post.dart';
 import 'createPostPage.dart';
 import 'package:http/http.dart' as http;
 
+import 'yourPost.dart';
+
 class MyPostPage extends StatefulWidget {
   const MyPostPage({super.key});
 
@@ -67,7 +69,10 @@ class _MyPostPageState extends State<MyPostPage> {
                 Text("Author: " + posts[index].author),
                 SizedBox(height:5),
                 ElevatedButton(
-                  onPressed: () {}, 
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(
+                    builder: (context) => const YourPostPage()));
+                  }, 
                   child: Text("Details"),
                   ),
                  
