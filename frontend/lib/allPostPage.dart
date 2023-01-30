@@ -30,7 +30,7 @@ class _MyPostPageState extends State<MyPostPage> {
   Future<List<Post>> getPosts() async {
     List<Post> postList = [];
     http.Response re = await getAllPostRequest();
-    if (jsonDecode(re.body)['success']) {
+    if (re.statusCode == 200) {
       for (var info in jsonDecode(re.body)['data'] as List<dynamic>) {
         postList.add(Post.fromJson(info));
       }

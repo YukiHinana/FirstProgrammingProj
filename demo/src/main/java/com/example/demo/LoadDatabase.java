@@ -10,9 +10,10 @@ public class LoadDatabase {
     @Bean
     CommandLineRunner initDatabase(AccountRepository repository) {
         return args -> {
-            System.out.println(repository.save(new Account("user1", "1234")));
-            System.out.println(repository.save(new Account("user2", "222222")));
-            System.out.println(repository.save(new Account("user3", "313124")));
+            repository.save(new Account("user1", "1234"));
+            repository.save(new Account("user2", "222222"));
+            repository.save(new Account("user3", "313124"));
+            repository.save(new Account("jessie", "121212"));
         };
     }
 }

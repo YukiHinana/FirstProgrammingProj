@@ -31,10 +31,13 @@ class _MyLoginPageState extends State<MyLoginPage> {
         headers: {"Content-Type": "application/json"},
         body: loginData
     );
-    final Map<String, dynamic> responseData = jsonDecode(response.body);
-    final SharedPreferences prefs = await _prefs;
-    if (responseData['success']) {
-      (prefs).setString("token", responseData['data']);
+    print(response.body);
+    if (response.body.isNotEmpty) {
+      final Map<String, dynamic> responseData = jsonDecode(response.body);
+      final SharedPreferences prefs = await _prefs;
+      if (response.statusCode == 200) {
+        (prefs).setString("token", responseData['data']);
+      }
     }
     return response;
   }
@@ -62,7 +65,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
         title: const Text('Test Login Page'),
       ),
       body: Column(
-      
+
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -74,7 +77,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
                 controller: _usernameController,
               ),
             ),
-            
+
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(
@@ -93,8 +96,9 @@ class _MyLoginPageState extends State<MyLoginPage> {
                 onPressed: () {
                   Future<http.Response> re = sendLoginRequest();
                   re.then((value) {
+                    // print(value.statusCode);
                     // redirect to next page on success
-                    if (jsonDecode(value.body)['success']) {
+                    if (value.statusCode == 200) {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -136,15 +140,15 @@ class _MyLoginPageState extends State<MyLoginPage> {
               ),
             ),
             SizedBox(height: 30),
-              Container(
-                  height: 400,
-                  width: double.infinity,
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage("assets/background.jpg"),
-                        fit: BoxFit.cover),
-  ),
-        ),
+            Container(
+              height: 400,
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage("assets/background.jpg"),
+                    fit: BoxFit.cover),
+              ),
+            ),
           ]
       ),
     );
