@@ -14,6 +14,7 @@ class MyLoginPage extends StatefulWidget {
 }
 
 class _MyLoginPageState extends State<MyLoginPage> {
+  late FocusNode focusNode;
   late TextEditingController _usernameController;
   late TextEditingController _passwordController;
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -43,6 +44,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
     super.initState();
     _usernameController = TextEditingController();
     _passwordController = TextEditingController();
+    focusNode = FocusNode();
   }
 
   @override
@@ -50,6 +52,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
     super.dispose();
     _usernameController.dispose();
     _passwordController.dispose();
+    focusNode.dispose();
   }
 
   @override
@@ -75,6 +78,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
               child: TextField(
                 decoration: const InputDecoration(
                     labelText: 'Password',
+                    labelStyle: TextStyle(color: Colors.deepPurpleAccent),
                     hintText: 'Enter the password'
                 ),
                 controller: _passwordController,

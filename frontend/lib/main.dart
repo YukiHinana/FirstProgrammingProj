@@ -14,6 +14,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         primarySwatch: Colors.yellow,
+        inputDecorationTheme: const InputDecorationTheme(
+            labelStyle: TextStyle(color: Colors.deepPurpleAccent),
+        )
       ),
       home: const MyLoginPage(),
     );
