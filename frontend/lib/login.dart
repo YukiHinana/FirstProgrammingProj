@@ -31,13 +31,13 @@ class _MyLoginPageState extends State<MyLoginPage> {
         headers: {"Content-Type": "application/json"},
         body: loginData
     );
-    print(response.body);
     if (response.body.isNotEmpty) {
       final Map<String, dynamic> responseData = jsonDecode(response.body);
       final SharedPreferences prefs = await _prefs;
       if (response.statusCode == 200) {
         (prefs).setString("token", responseData['data']);
       }
+
     }
     return response;
   }
