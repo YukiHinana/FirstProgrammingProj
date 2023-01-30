@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -50,14 +51,31 @@ class _MyPostPageState extends State<MyPostPage> {
         itemCount: posts.length,
         itemBuilder: (BuildContext context, int index) {
           return Container(
-            height: 20,
-            child: Row(
+            width: 600.0,
+            height: 70,      
+            decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(24.0),
+                      color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(0.5),
+                    ),
+            child: Column(
               children: [
-                Text(posts[index].title),
-                Text(posts[index].author)
+                Text("Title: " + posts[index].title,
+                style: TextStyle(fontWeight: FontWeight.bold),  
+                ),
+                
+
+                Text("Author: " + posts[index].author),
+                SizedBox(height:5),
+                ElevatedButton(
+                  onPressed: () {}, 
+                  child: Text("Details"),
+                  ),
+                 
               ],
             ),
+          
           );
+
         }
     );
     return w;
