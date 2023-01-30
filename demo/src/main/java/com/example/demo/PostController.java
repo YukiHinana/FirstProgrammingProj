@@ -3,6 +3,7 @@ package com.example.demo;
 import com.example.demo.entity.Account;
 import com.example.demo.entity.Post;
 import com.example.demo.entity.Token;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,20 +24,31 @@ public class PostController {
 
     @GetMapping("/")
     public ResponseWrapper<List<Post>> getPosts() {
-        return new ResponseWrapper<>(true, postRepository.findAll());
+        return new ResponseWrapper<>(HttpStatus.OK, postRepository.findAll());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseWrapper<?> getPost(@PathVariable Long id) {
+        Optional<Post> post = postRepository.findById(id);
+        if (!post.isPresent()) {
+            return new ResponseWrapper<>(HttpStatus.BAD_REQUEST, "Post does not exist");
+        }
+        return new ResponseWrapper<>(HttpStatus.OK, post.get());
     }
 
     @PostMapping("/create")
-    public ResponseWrapper<Post> create(@RequestBody PostRequest request,
+    public ResponseWrapper<?> create(@RequestBody PostRequest request,
                                         @RequestHeader("Authorization") String token) {
         Optional<Token> foundToken = tokenRepository.findByUuid(token);
         if (foundToken.isPresent()) {
+            if (request.getTitle().isEmpty() || request.getTitle() == null
+                    || request.getBody().isEmpty() || request.getBody() == null) {
+                return new ResponseWrapper<>(HttpStatus.BAD_REQUEST, "Post title and content required");
+            }
             Account account = foundToken.get().getAccount();
             Post post = new Post(request.getTitle(), request.getBody(), account);
-            return new ResponseWrapper<>(true, postRepository.save(post));
+            return new ResponseWrapper<>(HttpStatus.OK, postRepository.save(post));
         }
-        return new ResponseWrapper<>(false, null);
+        return new ResponseWrapper<>(HttpStatus.BAD_REQUEST, null);
     }
-
-
 }

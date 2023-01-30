@@ -1,19 +1,21 @@
 package com.example.demo;
 
+import org.springframework.http.HttpStatus;
+
 public class ResponseWrapper<T> {
-    private boolean isSuccess;
+    private HttpStatus isSuccess;
     private T data;
 
-    public ResponseWrapper(boolean isSuccess, T data) {
+    public ResponseWrapper(HttpStatus isSuccess, T data) {
         this.isSuccess = isSuccess;
         this.data = data;
     }
 
-    public boolean isSuccess() {
+    public HttpStatus isSuccess() {
         return isSuccess;
     }
 
-    public void setSuccess(boolean success) {
+    public void setSuccess(HttpStatus success) {
         isSuccess = success;
     }
 

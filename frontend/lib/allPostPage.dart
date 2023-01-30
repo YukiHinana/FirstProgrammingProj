@@ -21,8 +21,8 @@ class _MyPostPageState extends State<MyPostPage> {
 
   Future<http.Response> getAllPostRequest() async {
     var response = await http.get(
-        Uri.parse('http://appdemo.dns.codetector.org/posts/'),
-        headers: {"Content-Type": "application/json"},
+      Uri.parse('http://appdemo.dns.codetector.org/posts/'),
+      headers: {"Content-Type": "application/json"},
     );
     return response;
   }
@@ -39,6 +39,7 @@ class _MyPostPageState extends State<MyPostPage> {
   }
 
   List<Post> posts = [];
+
   @override
   void initState() {
     getPosts().then((value) {
@@ -54,33 +55,29 @@ class _MyPostPageState extends State<MyPostPage> {
         itemBuilder: (BuildContext context, int index) {
           return Container(
             width: 600.0,
-            height: 70,      
+            height: 100,
             decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(24.0),
-                      color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(0.5),
-                    ),
+              borderRadius: BorderRadius.circular(24.0),
+              color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt())
+                  .withOpacity(0.5),
+            ),
             child: Column(
               children: [
                 Text("Title: " + posts[index].title,
-                style: TextStyle(fontWeight: FontWeight.bold),  
+                  style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                
-
                 Text("Author: " + posts[index].author),
-                SizedBox(height:5),
+                // SizedBox(height: 5),
                 ElevatedButton(
                   onPressed: () {
                     Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => const YourPostPage()));
-                  }, 
+                        builder: (context) => const YourPostPage()));
+                  },
                   child: Text("Details"),
-                  ),
-                 
+                ),
               ],
             ),
-          
           );
-
         }
     );
     return w;
