@@ -84,11 +84,30 @@ class _NewPostPageState extends State<NewPostPage> {
                   padding: const EdgeInsets.all(13.0),
                   child: ElevatedButton(
                     onPressed: () {
-                      createPostRequest();
-                      Navigator.push(context, MaterialPageRoute(
-                          builder: (context) => SinglePostPage(
-                              title: _postTitleController.text,
-                              body: _postBodyController.text)));
+                      if (_postTitleController.text.isEmpty ||
+                          _postBodyController.text.isEmpty) {
+                        showDialog<String>(
+                            context: context,
+                            builder: (BuildContext context) =>
+                                AlertDialog(
+                                  title: const Text('Error'),
+                                  content: Text('Post title and content required'),
+                                  actions: [
+                                    TextButton(
+                                        onPressed: () =>
+                                            Navigator.pop(context, 'OK'),
+                                        child: const Text('OK'))
+                                  ],
+                                )
+                        );
+                      } else {
+                        createPostRequest();
+                        Navigator.push(context, MaterialPageRoute(
+                            builder: (context) =>
+                                SinglePostPage(
+                                    title: _postTitleController.text,
+                                    body: _postBodyController.text)));
+                      }
                     },
                     child: const Text('Post'),
                   ),

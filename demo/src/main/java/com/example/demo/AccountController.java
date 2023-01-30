@@ -26,7 +26,6 @@ public class AccountController {
 
     @PostMapping("/")
     public ResponseWrapper<?> register(@RequestBody AccountRequest request) {
-        System.out.println(request);
         Account newAccount = new Account(request.getUsername(), request.getPassword());
         Optional<Account> findAccount = accountRepository.findByUsername(request.getUsername());
         if (findAccount.isPresent()) {

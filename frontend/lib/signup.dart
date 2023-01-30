@@ -14,7 +14,6 @@ class MySignupPage extends StatefulWidget {
 class _MySignupState extends State<MySignupPage> {
   late TextEditingController _usernameController;
   late TextEditingController _passwordController;
-  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
  Future<http.Response> sendSignupRequest() async {
     var signupData = json.encode(
@@ -28,9 +27,6 @@ class _MySignupState extends State<MySignupPage> {
         headers: {"Content-Type": "application/json"},
         body: signupData
     );
-    final responseData = jsonDecode(response.body);
-    print(response.body);
-    print(responseData);
     return response;
   }
    @override
@@ -45,8 +41,6 @@ class _MySignupState extends State<MySignupPage> {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: const Text('Test Login Page'),
       ),
       body: Column(
@@ -85,6 +79,23 @@ class _MySignupState extends State<MySignupPage> {
                     MaterialPageRoute(builder: (context) => const MySignupPage()),
                     );
                   }
+                  else if (_usernameController.text.isEmpty ||
+                      _passwordController.text.isEmpty) {
+                    showDialog<String>(
+                        context: context,
+                        builder: (BuildContext context) =>
+                            AlertDialog(
+                              title: const Text('Sign Up Failed!'),
+                              content: Text('Username and password required'),
+                              actions: [
+                                TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, 'OK'),
+                                    child: const Text('OK'))
+                              ],
+                            )
+                    );
+                  }
                   else{
                     showDialog(
                       context: context,
@@ -94,7 +105,6 @@ class _MySignupState extends State<MySignupPage> {
                       ),
                     );
                   }
-    
                 });
                 },
               ),
