@@ -55,7 +55,11 @@ class _MyPostPageState extends State<MyPostPage> {
         itemBuilder: (BuildContext context, int index) {
           return Container(
             width: 600.0,
+<<<<<<< Updated upstream
             height: 100,
+=======
+            height:100,      
+>>>>>>> Stashed changes
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(24.0),
               color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt())

@@ -137,7 +137,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
             ),
             SizedBox(height: 30),
               Container(
-                  height: 500,
+                  height: 400,
                   width: double.infinity,
                   decoration: const BoxDecoration(
                     image: DecorationImage(
