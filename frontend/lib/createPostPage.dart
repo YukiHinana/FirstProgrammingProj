@@ -1,8 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'singlePostPage.dart';
+import 'package:ttt/post.dart';
 import 'package:http/http.dart' as http;
 
 class NewPostPage extends StatefulWidget {
@@ -16,6 +17,8 @@ class _NewPostPageState extends State<NewPostPage> {
   late TextEditingController _postTitleController;
   late TextEditingController _postBodyController;
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
+  Post post = Post(0, "", "", "");
 
   @override
   void initState() {
@@ -44,9 +47,16 @@ class _NewPostPageState extends State<NewPostPage> {
         headers: {"Content-Type": "application/json", "Authorization": token},
         body: postData
     );
-    final Map<String, dynamic> responseData = jsonDecode(response.body);
-
     return response;
+  }
+
+  Future<dynamic> getPost() async {
+    http.Response re = await createPostRequest();
+    if (re.statusCode == 200) {
+      return Post.fromJson(jsonDecode(re.body)['data']);
+    } else {
+
+    }
   }
 
   @override
@@ -91,7 +101,8 @@ class _NewPostPageState extends State<NewPostPage> {
                             builder: (BuildContext context) =>
                                 AlertDialog(
                                   title: const Text('Error'),
-                                  content: Text('Post title and content required'),
+                                  content: const Text(
+                                      'Post title and content required'),
                                   actions: [
                                     TextButton(
                                         onPressed: () =>
@@ -101,12 +112,12 @@ class _NewPostPageState extends State<NewPostPage> {
                                 )
                         );
                       } else {
-                        createPostRequest();
-                        Navigator.push(context, MaterialPageRoute(
-                            builder: (context) =>
-                                SinglePostPage(
-                                    title: _postTitleController.text,
-                                    body: _postBodyController.text)));
+                        getPost().then((value) {
+                          setState(() {
+                            post = value;
+                            return context.go('/posts/view/${post.postId}');
+                          });
+                        });
                       }
                     },
                     child: const Text('Post'),
@@ -114,7 +125,7 @@ class _NewPostPageState extends State<NewPostPage> {
                 )
               ]
           ),
-          )
+        )
     );
   }
 }

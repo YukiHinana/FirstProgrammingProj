@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -79,11 +80,7 @@ class _MySignupState extends State<MySignupPage> {
                   Future<http.Response> res = sendSignupRequest();
                   res.then((value) {
                     if (value.statusCode == 200) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const MyLoginPage()),
-                      );
+                      context.go("/");
                     }
                     else if (_usernameController.text.isEmpty ||
                         _passwordController.text.isEmpty) {

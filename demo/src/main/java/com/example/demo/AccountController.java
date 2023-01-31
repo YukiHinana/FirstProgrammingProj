@@ -43,11 +43,8 @@ public class AccountController {
     @PostMapping("/login")
     public ResponseEntity<ResponseWrapper<?>> login(@RequestBody AccountRequest request) {
         String username = request.getUsername();
-        System.out.println(request.getUsername());
-        System.out.println(request.getPassword());
         if (request.getUsername().isEmpty() || request.getUsername() == null
                 || request.getPassword().isEmpty() || request.getPassword() == null) {
-            System.out.println("aaa");
             return ResponseEntity.badRequest().body(new ResponseWrapper<>("Username and password required"));
         }
         Optional<Account> account = accountRepository.findByUsername(username);

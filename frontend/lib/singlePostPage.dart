@@ -2,23 +2,58 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ttt/post.dart';
 import 'createPostPage.dart';
 import 'package:http/http.dart' as http;
 import 'allPostPage.dart';
 
-class SinglePostPage extends StatelessWidget {
-  final String title;
-  final String body;
+class SinglePostPage extends StatefulWidget {
+  final int postId;
+  const SinglePostPage({super.key, required this.postId});
 
-  const SinglePostPage({super.key, required this.title, required this.body});
+  @override
+  State<SinglePostPage> createState() => _SinglePostPageState();
+
+}
+
+class _SinglePostPageState extends State<SinglePostPage> {
+
+  Future<http.Response> getSinglePostRequest() async {
+    var response = await http.get(
+      Uri.parse('http://appdemo.dns.codetector.org/posts/${widget.postId}'),
+      headers: {"Content-Type": "application/json"},
+    );
+    return response;
+  }
+
+  Future<dynamic> getPost() async {
+    http.Response re = await getSinglePostRequest();
+    if (re.statusCode == 200) {
+      return Post.fromJson(jsonDecode(re.body)['data']);
+    } else {
+
+    }
+  }
+
+  Post post = Post(0, "", "", "");
+
+  @override
+  void initState() {
+    super.initState();
+    getPost().then((value) {
+      setState(() {
+        post = value;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("aaaa"),
+          title: const Text("Post"),
         ),
         body: Column(
             children: [
@@ -31,8 +66,8 @@ class SinglePostPage extends StatelessWidget {
                       color: const Color(0xFFFF9000).withOpacity(0.8),
                     ),
                     child: Center(
-                      child: Text(title,
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                      child: Text(post.title,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                     )
                 ),
@@ -48,8 +83,8 @@ class SinglePostPage extends StatelessWidget {
                     color: const Color(0xFFFF9000).withOpacity(0.5),
                   ),
                   child: Center(
-                    child: Text(body,
-                      style: TextStyle(fontStyle: FontStyle.italic),
+                    child: Text(post.body,
+                      style: const TextStyle(fontStyle: FontStyle.italic),
                     ),
                   ),
                 ),
@@ -57,10 +92,7 @@ class SinglePostPage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(13.0),
                 child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(
-                        builder: (context) => MyPostPage()));
-                  },
+                  onPressed: () => context.pop(),
                   child: const Text('Post'),
                 ),
               )

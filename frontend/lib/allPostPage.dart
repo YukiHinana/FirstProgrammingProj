@@ -2,12 +2,9 @@ import 'dart:convert';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ttt/post.dart';
-import 'createPostPage.dart';
 import 'package:http/http.dart' as http;
-
-import 'yourPost.dart';
 
 class MyPostPage extends StatefulWidget {
   const MyPostPage({super.key});
@@ -42,6 +39,7 @@ class _MyPostPageState extends State<MyPostPage> {
 
   @override
   void initState() {
+    super.initState();
     getPosts().then((value) {
       setState(() {
         posts = value;
@@ -63,17 +61,15 @@ class _MyPostPageState extends State<MyPostPage> {
             ),
             child: Column(
               children: [
-                Text("Title: " + posts[index].title,
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                Text("Title: ${posts[index].title}",
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
-                Text("Author: " + posts[index].author),
-                // SizedBox(height: 5),
+                Text("Author: ${posts[index].author}"),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(
-                        builder: (context) => const YourPostPage()));
+                    return context.push('/posts/view/${posts[index].postId}');
                   },
-                  child: Text("Details"),
+                  child: const Text("Details"),
                 ),
               ],
             ),
@@ -93,10 +89,7 @@ class _MyPostPageState extends State<MyPostPage> {
       floatingActionButton: Padding(
         padding: const EdgeInsets.all(0),
         child: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(context, MaterialPageRoute(
-                builder: (context) => const NewPostPage()));
-          },
+          onPressed: () => context.go('/posts/create'),
           child: const Icon(Icons.add),
         ),
       ),

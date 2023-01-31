@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:ttt/signup.dart';
@@ -37,7 +38,6 @@ class _MyLoginPageState extends State<MyLoginPage> {
       if (response.statusCode == 200) {
         (prefs).setString("token", responseData['data']);
       }
-
     }
     return response;
   }
@@ -65,7 +65,6 @@ class _MyLoginPageState extends State<MyLoginPage> {
         title: const Text('Test Login Page'),
       ),
       body: Column(
-
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -77,7 +76,6 @@ class _MyLoginPageState extends State<MyLoginPage> {
                 controller: _usernameController,
               ),
             ),
-
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(
@@ -96,14 +94,9 @@ class _MyLoginPageState extends State<MyLoginPage> {
                 onPressed: () {
                   Future<http.Response> re = sendLoginRequest();
                   re.then((value) {
-                    // print(value.statusCode);
                     // redirect to next page on success
                     if (value.statusCode == 200) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const MyPostPage()),
-                      );
+                      context.go('/posts');
                     } else {
                       // if incorrect username or password, pop alert window
                       showDialog<String>(
@@ -130,13 +123,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
               height: 50,
               child: ElevatedButton(
                 child: const Text('SignUp'),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const MySignupPage()),
-                  );
-                },
+                onPressed: () => context.go('/signup'),
               ),
             ),
             SizedBox(height: 30),
