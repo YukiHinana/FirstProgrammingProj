@@ -7,20 +7,11 @@ import 'package:ttt/singlePostPage.dart';
 import './login.dart';
 import 'createPostPage.dart';
 
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  // Obtain a list of the available cameras on the device.
-  final cameras = await availableCameras();
-
-  // Get a specific camera from the list of available cameras.
-  final firstCamera = cameras.first;
-
+void main() {
   runApp(const MyApp());
 }
 
 final GoRouter _router = GoRouter(
-  debugLogDiagnostics: true,
   initialLocation: '/login',
   routes: <RouteBase>[
     GoRoute(
@@ -28,16 +19,13 @@ final GoRouter _router = GoRouter(
       path: '/login',
       builder: (BuildContext context, GoRouterState state) {
         return const MyLoginPage();
-      },
-      routes: <RouteBase>[
-        GoRoute(
-          path: 'signup',
-          builder: (BuildContext context, GoRouterState state) {
-            return const MySignupPage();
-          },
-        ),
-
-      ],
+      }
+    ),
+    GoRoute(
+      path: '/signup',
+      builder: (BuildContext context, GoRouterState state) {
+        return const MySignupPage();
+      }
     ),
     GoRoute(
       path: '/posts',

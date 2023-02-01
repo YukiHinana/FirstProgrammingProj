@@ -64,79 +64,81 @@ class _MyLoginPageState extends State<MyLoginPage> {
       appBar: AppBar(
         title: const Text('Test Login Page'),
       ),
-      body: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                decoration: const InputDecoration(
-                    labelText: 'UserName',
-                    hintText: 'Enter the username'
+      body: SingleChildScrollView(
+        child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  decoration: const InputDecoration(
+                      labelText: 'UserName',
+                      hintText: 'Enter the username'
+                  ),
+                  controller: _usernameController,
                 ),
-                controller: _usernameController,
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                decoration: const InputDecoration(
-                    labelText: 'Password',
-                    labelStyle: TextStyle(color: Colors.deepPurpleAccent),
-                    hintText: 'Enter the password'
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  decoration: const InputDecoration(
+                      labelText: 'Password',
+                      labelStyle: TextStyle(color: Colors.deepPurpleAccent),
+                      hintText: 'Enter the password'
+                  ),
+                  controller: _passwordController,
                 ),
-                controller: _passwordController,
               ),
-            ),
-            Container(
-              height: 50,
-              child: ElevatedButton(
-                child: const Text('Login'),
-                onPressed: () {
-                  Future<http.Response> re = sendLoginRequest();
-                  re.then((value) {
-                    // redirect to next page on success
-                    if (value.statusCode == 200) {
-                      context.go('/posts');
-                    } else {
-                      // if incorrect username or password, pop alert window
-                      showDialog<String>(
-                          context: context,
-                          builder: (BuildContext context) =>
-                              AlertDialog(
-                                title: const Text('Login Failed'),
-                                content: Text(jsonDecode(value.body)['data']),
-                                actions: [
-                                  TextButton(
-                                      onPressed: () =>
-                                          Navigator.pop(context, 'OK'),
-                                      child: const Text('OK'))
-                                ],
-                              )
-                      );
-                    }
-                  });
-                },
+              Container(
+                height: 50,
+                child: ElevatedButton(
+                  child: const Text('Login'),
+                  onPressed: () {
+                    Future<http.Response> re = sendLoginRequest();
+                    re.then((value) {
+                      // redirect to next page on success
+                      if (value.statusCode == 200) {
+                        context.go('/posts');
+                      } else {
+                        // if incorrect username or password, pop alert window
+                        showDialog<String>(
+                            context: context,
+                            builder: (BuildContext context) =>
+                                AlertDialog(
+                                  title: const Text('Login Failed'),
+                                  content: Text(jsonDecode(value.body)['data']),
+                                  actions: [
+                                    TextButton(
+                                        onPressed: () =>
+                                            Navigator.pop(context, 'OK'),
+                                        child: const Text('OK'))
+                                  ],
+                                )
+                        );
+                      }
+                    });
+                  },
+                ),
               ),
-            ),
-            const SizedBox(height: 10),
-            Container(
-              height: 50,
-              child: ElevatedButton(
-                child: const Text('SignUp'),
-                onPressed: () => context.go('/signup'),
+              const SizedBox(height: 10),
+              Container(
+                height: 50,
+                child: ElevatedButton(
+                  child: const Text('SignUp'),
+                  onPressed: () => context.go('/signup'),
+                ),
               ),
-            ),
-            SizedBox(height: 30),
-            Container(
-              height: 400,
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage("assets/background.jpg"),
-                    fit: BoxFit.cover),
+              SizedBox(height: 30),
+              Container(
+                height: 400,
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage("assets/background.jpg"),
+                      fit: BoxFit.cover),
+                ),
               ),
-            ),
-          ]
+            ]
+        ),
       ),
     );
   }

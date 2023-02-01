@@ -55,48 +55,50 @@ class _SinglePostPageState extends State<SinglePostPage> {
         appBar: AppBar(
           title: const Text("Post"),
         ),
-        body: Column(
-            children: [
-              Padding(padding: const EdgeInsets.all(13.0),
-                child: Container(
+        body: SingleChildScrollView(
+          child: Column(
+              children: [
+                Padding(padding: const EdgeInsets.all(13.0),
+                  child: Container(
+                      width: 600.0,
+                      height: 100.0,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(24.0),
+                        color: const Color(0xFFFF9000).withOpacity(0.8),
+                      ),
+                      child: Center(
+                        child: Text(post.title,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      )
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(13.0),
+
+                  child: Container(
                     width: 600.0,
-                    height: 100.0,
+                    height: 300.0,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(24.0),
-                      color: const Color(0xFFFF9000).withOpacity(0.8),
+                      color: const Color(0xFFFF9000).withOpacity(0.5),
                     ),
                     child: Center(
-                      child: Text(post.title,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      child: Text(post.body,
+                        style: const TextStyle(fontStyle: FontStyle.italic),
                       ),
-                    )
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(13.0),
-
-                child: Container(
-                  width: 600.0,
-                  height: 300.0,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(24.0),
-                    color: const Color(0xFFFF9000).withOpacity(0.5),
-                  ),
-                  child: Center(
-                    child: Text(post.body,
-                      style: const TextStyle(fontStyle: FontStyle.italic),
                     ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(13.0),
-                child: ElevatedButton(
-                  onPressed: () => context.pop(),
-                  child: const Text('Post'),
-                ),
-              )
-            ]
+                Padding(
+                  padding: const EdgeInsets.all(13.0),
+                  child: ElevatedButton(
+                    onPressed: () => context.pop(),
+                    child: const Text('View all Posts'),
+                  ),
+                )
+              ]
+          ),
         )
     );
   }

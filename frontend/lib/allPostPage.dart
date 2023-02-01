@@ -48,33 +48,42 @@ class _MyPostPageState extends State<MyPostPage> {
   }
 
   Widget postListView() {
-    Widget w = ListView.builder(
-        itemCount: posts.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Container(
-            width: 600.0,
-            height: 100,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(24.0),
-              color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt())
-                  .withOpacity(0.5),
-            ),
-            child: Column(
-              children: [
-                Text("Title: ${posts[index].title}",
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-                Text("Author: ${posts[index].author}"),
-                ElevatedButton(
-                  onPressed: () {
-                    return context.push('/posts/view/${posts[index].postId}');
-                  },
-                  child: const Text("Details"),
-                ),
-              ],
-            ),
-          );
-        }
+    Widget w = RefreshIndicator(
+      onRefresh: () async {
+        getPosts().then((value) {
+          setState(() {
+            posts = value;
+          });
+        });
+      },
+      child: ListView.builder(
+          itemCount: posts.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Container(
+              width: 600.0,
+              height: 100,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(24.0),
+                color: Color((math.Random().nextDouble() * 0xFFFFFF).toInt())
+                    .withOpacity(0.5),
+              ),
+              child: Column(
+                children: [
+                  Text("Title: ${posts[index].title}",
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Text("Author: ${posts[index].author}"),
+                  ElevatedButton(
+                    onPressed: () {
+                      return context.push('/posts/view/${posts[index].postId}');
+                    },
+                    child: const Text("Details"),
+                  ),
+                ],
+              ),
+            );
+          }
+      ),
     );
     return w;
   }
