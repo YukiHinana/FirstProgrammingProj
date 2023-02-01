@@ -80,7 +80,7 @@ class _MySignupState extends State<MySignupPage> {
                   Future<http.Response> res = sendSignupRequest();
                   res.then((value) {
                     if (value.statusCode == 200) {
-                      context.go("/login");
+                      context.pop();
                     }
                     else if (_usernameController.text.isEmpty ||
                         _passwordController.text.isEmpty) {

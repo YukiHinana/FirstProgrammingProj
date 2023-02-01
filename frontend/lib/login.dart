@@ -124,7 +124,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
                 height: 50,
                 child: ElevatedButton(
                   child: const Text('SignUp'),
-                  onPressed: () => context.go('/signup'),
+                  onPressed: () => context.push('/signup'),
                 ),
               ),
               SizedBox(height: 30),
